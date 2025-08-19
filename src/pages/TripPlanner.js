@@ -7,6 +7,7 @@ import {
   updateTrip,
 } from "../store/tripSlice";
 import { setUserProfile, loadUserProfiles } from "../store/profileSlice";
+import { logoutUser } from "../store/userSlice";
 import defaultProfile from "../data/profiles";
 import ApiService from "../services/api";
 
@@ -43,6 +44,15 @@ const TripPlanner = () => {
         }
       } catch (error) {
         console.error('Katalog yüklenirken hata:', error);
+        
+        // Oturum süresi dolmuş kontrolü
+        if (error.message.includes('Oturum süresi doldu')) {
+          // Session süresi dolmuş, kullanıcıyı logout yap
+          dispatch(logoutUser());
+          return; // Catalog yüklemeyi durdur
+        }
+        
+        // Diğer hatalar için default catalog kullan
         setCatalogData({
           countries: [
             { countryCode: 'TR', countryName: 'Turkey' },
@@ -249,13 +259,22 @@ const TripPlanner = () => {
       };
 
       console.log(simulationData);
-      return;
       const result = await ApiService.simulateRoaming(simulationData);
       setSimulationResult(result);
       setShowSimulation(true);
     } catch (error) {
       console.error('Simülasyon hatası:', error);
-      // alert('Simülasyon sırasında bir hata oluştu. Lütfen tekrar deneyin.');
+      
+      // Oturum süresi dolmuş hatası için
+      if (error.message.includes('Oturum süresi doldu')) {
+        alert('Oturum süreniz dolmuş. Sayfayı yenileyerek tekrar giriş yapın.');
+        // Redux store'dan logout yap
+        dispatch(logoutUser());
+        // Sayfayı yenile
+        window.location.reload();
+      } else {
+        alert(`Simülasyon sırasında bir hata oluştu: ${error.message}`);
+      }
     }
   };
 

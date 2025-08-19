@@ -13,8 +13,9 @@ export const useAuth = () => {
         const now = new Date().getTime();
         const timeUntilExpiry = tokenExpiresAt - now;
         
-        // If token expires in less than 5 minutes, consider it expired
-        if (timeUntilExpiry < 5 * 60 * 1000) {
+        // Sadece token gerçekten süresi dolmuşsa logout yap
+        if (timeUntilExpiry <= 0) {
+          console.log('Token expired, logging out user');
           dispatch(logoutUser());
         }
       }
@@ -23,8 +24,8 @@ export const useAuth = () => {
     // Check immediately
     checkTokenValidity();
 
-    // Check every minute
-    const interval = setInterval(checkTokenValidity, 60 * 1000);
+    // Check every 10 minutes
+    const interval = setInterval(checkTokenValidity, 10 * 60 * 1000);
 
     return () => clearInterval(interval);
   }, [accessToken, tokenExpiresAt, dispatch]);

@@ -5,17 +5,9 @@ class ApiService {
     return localStorage.getItem('turkcell_token');
   }
 
-  isTokenExpired() {
-    const expiresAt = localStorage.getItem('turkcell_token_expires');
-    if (!expiresAt) return true;
-    
-    const now = new Date().getTime();
-    return now >= parseInt(expiresAt);
-  }
-
   getAuthHeaders() {
     const token = this.getAuthToken();
-    if (token && !this.isTokenExpired()) {
+    if (token) {
       return {
         'Authorization': `Bearer ${token}`
       };
@@ -29,7 +21,7 @@ class ApiService {
     const defaultOptions = {
       headers: {
         'Content-Type': 'application/json',
-        ...this.getAuthHeaders(), // Automatically add auth headers
+        ...this.getAuthHeaders(),
       },
     };
 
@@ -46,15 +38,6 @@ class ApiService {
       const response = await fetch(url, config);
       
       if (!response.ok) {
-        if (response.status === 401) {
-          localStorage.removeItem('turkcell_user');
-          localStorage.removeItem('turkcell_token');
-          localStorage.removeItem('turkcell_token_expires');
-          
-          window.location.href = '/login';
-          throw new Error('Oturum süresi doldu. Lütfen tekrar giriş yapın.');
-        }
-        
         const errorData = await response.json().catch(() => ({}));
         throw new Error(errorData.message || `HTTP error! status: ${response.status}`);
       }
@@ -85,7 +68,6 @@ class ApiService {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        // Don't include auth headers for login
       },
       body: JSON.stringify({
         email: credentials.email,
@@ -121,11 +103,6 @@ class ApiService {
     });
   }
 
-  async refreshToken() {
-    return this.makeRequest('/auth/refresh', {
-      method: 'POST',
-    });
-  }
 }
 
 export default new ApiService();

@@ -25,18 +25,31 @@ const Login = () => {
       ...prev,
       [name]: value
     }));
+    
+    // Input değiştiğinde error mesajını temizle
+    if (errorMsg) {
+      setErrorMsg("");
+    }
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setErrorMsg(""); // Önceki hataları temizle
 
     try {
-        console.log(formData);
+      console.log(formData);
       const result = await dispatch(loginUserAsync(formData)).unwrap();
       navigate('/');
     } catch (error) {
-      setErrorMsg("E-posta veya şifre hatalı!");
+      // Hata mesajını göster ve hatayı console'a yazdır
+      const errorMessage = error.message || "E-posta veya şifre hatalı!";
+      setErrorMsg(errorMessage);
       console.error('Login failed:', error);
+      
+      // Redux error state'ini temizle
+      setTimeout(() => {
+        dispatch(clearError());
+      }, 100);
     }
   };
 
