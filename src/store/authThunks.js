@@ -9,7 +9,7 @@ import {
   registerFailure 
 } from './userSlice';
 
-// Login thunk
+// login
 export const loginUserAsync = createAsyncThunk(
   'user/loginAsync',
   async (credentials, { dispatch, rejectWithValue }) => {
@@ -17,14 +17,8 @@ export const loginUserAsync = createAsyncThunk(
       dispatch(loginStart());
       const response = await ApiService.login(credentials);
       
-      const responseWithUserData = {
-        ...response,
-        email: credentials.email,
-        name: credentials.name || credentials.email
-      };
-      
-      dispatch(loginSuccess(responseWithUserData));
-      return responseWithUserData;
+      dispatch(loginSuccess(response));
+      return response;
     } catch (error) {
       const errorMessage = error.message || 'Giriş yapılırken bir hata oluştu';
       dispatch(loginFailure(errorMessage));
@@ -33,7 +27,7 @@ export const loginUserAsync = createAsyncThunk(
   }
 );
 
-// Register thunk
+// register
 export const registerUserAsync = createAsyncThunk(
   'user/registerAsync',
   async (userData, { dispatch, rejectWithValue }) => {
@@ -41,14 +35,8 @@ export const registerUserAsync = createAsyncThunk(
       dispatch(registerStart());
       const response = await ApiService.register(userData);
       
-      const responseWithUserData = {
-        ...response,
-        email: userData.email,
-        name: userData.name
-      };
-      
-      dispatch(registerSuccess(responseWithUserData));
-      return responseWithUserData;
+      dispatch(registerSuccess(response));
+      return response;
     } catch (error) {
       const errorMessage = error.message || 'Kayıt olurken bir hata oluştu';
       dispatch(registerFailure(errorMessage));

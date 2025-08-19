@@ -3,7 +3,7 @@ import { createSlice } from '@reduxjs/toolkit';
 const initialState = {
   trips: [],
   currentTrip: null,
-  homeCountry: 'TR' // Default to Turkey
+  homeCountry: 'TR'
 };
 
 const tripSlice = createSlice({
@@ -21,7 +21,6 @@ const tripSlice = createSlice({
     },
     removeTrip: (state, action) => {
       state.trips = state.trips.filter(trip => trip.id !== action.payload);
-      // Reorder remaining trips
       state.trips.forEach((trip, index) => {
         trip.order = index;
       });
@@ -38,7 +37,6 @@ const tripSlice = createSlice({
       const [removed] = state.trips.splice(sourceIndex, 1);
       state.trips.splice(destinationIndex, 0, removed);
       
-      // Update order property
       state.trips.forEach((trip, index) => {
         trip.order = index;
       });

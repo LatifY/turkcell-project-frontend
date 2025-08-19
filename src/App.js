@@ -6,32 +6,29 @@ import { ThemeProvider } from './contexts/ThemeContext';
 import Layout from './components/Layout';
 import HomePage from './pages/HomePage';
 import TripPlanner from './pages/TripPlanner';
-import Packages from './pages/Packages';
-import Simulator from './pages/Simulator';
 import Login from './pages/Login';
 import Register from './pages/Register';
+import AuthWrapper from './components/AuthWrapper';
 
-function App() {
+export default function App() {
   return (
     <Provider store={store}>
       <ThemeProvider>
         <Router>
           <div className="App">
-            <Layout>
-              <Routes>
-                <Route path="/" element={<HomePage />} />
-                <Route path="/trip-planner" element={<TripPlanner />} />
-                <Route path="/packages" element={<Packages />} />
-                <Route path="/simulator" element={<Simulator />} />
-                <Route path="/login" element={<Login />} />
-                <Route path="/register" element={<Register />} />
-              </Routes>
-            </Layout>
+            <AuthWrapper>
+              <Layout>
+                <Routes>
+                  <Route path="/" element={<HomePage />} />
+                  <Route path="/trip-planner" element={<TripPlanner />} />
+                  <Route path="/login" element={<Login />} />
+                  <Route path="/register" element={<Register />} />
+                </Routes>
+              </Layout>
+            </AuthWrapper>
           </div>
         </Router>
       </ThemeProvider>
     </Provider>
   );
 }
-
-export default App;

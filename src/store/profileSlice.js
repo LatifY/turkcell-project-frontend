@@ -2,7 +2,7 @@ import { createSlice } from '@reduxjs/toolkit';
 import defaultProfile from '../data/profiles';
 
 const initialState = {
-  userProfiles: {} // userId -> profile mapping
+  userProfiles: {}
 };
 
 const profileSlice = createSlice({
@@ -12,7 +12,6 @@ const profileSlice = createSlice({
     setUserProfile: (state, action) => {
       const { userId, profile } = action.payload;
       state.userProfiles[userId] = profile;
-      // Save to localStorage
       localStorage.setItem('turkcell_profiles', JSON.stringify(state.userProfiles));
     },
     loadUserProfiles: (state) => {

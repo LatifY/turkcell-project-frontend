@@ -6,7 +6,7 @@ import { clearError } from '../store/userSlice';
 
 const Register = () => {
   const [formData, setFormData] = useState({
-    fullName: '', // API expects 'fullName'
+    fullName: '',
     email: '',
     password: '',
     confirmPassword: ''
@@ -73,24 +73,21 @@ const Register = () => {
     }
 
     try {
-      // Prepare data for API (remove confirmPassword - it's only for frontend validation)
       const registrationData = {
-        name: formData.fullName, // API expects 'name' not 'fullName'
+        name: formData.fullName,
         email: formData.email,
         password: formData.password
       };
       
       const result = await dispatch(registerUserAsync(registrationData)).unwrap();
-      // Registration successful, navigate to home
       navigate('/');
     } catch (error) {
-      // Error is handled by Redux slice
       console.error('Registration failed:', error);
     }
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 flex flex-col justify-center py-12 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex flex-col justify-center py-12 sm:px-6 lg:px-8">
       <div className="sm:mx-auto sm:w-full sm:max-w-md">
         <Link to="/" className="flex justify-center items-center space-x-2 mb-8">
             <img 
@@ -100,10 +97,10 @@ const Register = () => {
             />
         </Link>
 
-        <h2 className="text-center text-3xl font-extrabold text-gray-900">
+        <h2 className="text-center text-3xl font-extrabold text-gray-900 dark:text-white">
           Yeni Hesap Oluşturun
         </h2>
-        <p className="mt-2 text-center text-sm text-gray-600">
+        <p className="mt-2 text-center text-sm text-gray-600 dark:text-gray-400">
           Veya{' '}
           <Link to="/login" className="font-medium text-yellow-600 hover:text-yellow-500">
             mevcut hesabınıza giriş yapın
@@ -112,16 +109,16 @@ const Register = () => {
       </div>
 
       <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
-        <div className="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
+        <div className="bg-white dark:bg-gray-800 py-8 px-4 shadow sm:rounded-lg sm:px-10">
           <form className="space-y-6" onSubmit={handleSubmit}>
             {(errors.general || error) && (
-              <div className="bg-red-50 border border-red-200 text-red-600 px-4 py-3 rounded-md">
+              <div className="bg-red-50 dark:bg-red-900/50 border border-red-200 dark:border-red-700 text-red-600 dark:text-red-400 px-4 py-3 rounded-md">
                 {errors.general || error}
               </div>
             )}
 
             <div>
-              <label htmlFor="fullName" className="block text-sm font-medium text-gray-700">
+              <label htmlFor="fullName" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
                 Ad Soyad
               </label>
               <div className="mt-1">
@@ -133,19 +130,19 @@ const Register = () => {
                   required
                   value={formData.fullName}
                   onChange={handleInputChange}
-                  className={`appearance-none block w-full px-3 py-2 border rounded-md placeholder-gray-400 focus:outline-none focus:ring-yellow-500 focus:border-yellow-500 ${
-                    errors.fullName ? 'border-red-300' : 'border-gray-300'
+                  className={`appearance-none block w-full px-3 py-2 border rounded-md placeholder-gray-400 dark:placeholder-gray-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-yellow-500 focus:border-yellow-500 ${
+                    errors.fullName ? 'border-red-300 dark:border-red-600' : 'border-gray-300 dark:border-gray-600'
                   }`}
                   placeholder="Adınız Soyadınız"
                 />
                 {errors.fullName && (
-                  <p className="mt-1 text-sm text-red-600">{errors.fullName}</p>
+                  <p className="mt-1 text-sm text-red-600 dark:text-red-400">{errors.fullName}</p>
                 )}
               </div>
             </div>
 
             <div>
-              <label htmlFor="email" className="block text-sm font-medium text-gray-700">
+              <label htmlFor="email" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
                 E-posta Adresi
               </label>
               <div className="mt-1">
@@ -157,19 +154,19 @@ const Register = () => {
                   required
                   value={formData.email}
                   onChange={handleInputChange}
-                  className={`appearance-none block w-full px-3 py-2 border rounded-md placeholder-gray-400 focus:outline-none focus:ring-yellow-500 focus:border-yellow-500 ${
-                    errors.email ? 'border-red-300' : 'border-gray-300'
+                  className={`appearance-none block w-full px-3 py-2 border rounded-md placeholder-gray-400 dark:placeholder-gray-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-yellow-500 focus:border-yellow-500 ${
+                    errors.email ? 'border-red-300 dark:border-red-600' : 'border-gray-300 dark:border-gray-600'
                   }`}
                   placeholder="ornek@email.com"
                 />
                 {errors.email && (
-                  <p className="mt-1 text-sm text-red-600">{errors.email}</p>
+                  <p className="mt-1 text-sm text-red-600 dark:text-red-400">{errors.email}</p>
                 )}
               </div>
             </div>
 
             <div>
-              <label htmlFor="password" className="block text-sm font-medium text-gray-700">
+              <label htmlFor="password" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
                 Parola
               </label>
               <div className="mt-1">
@@ -181,19 +178,19 @@ const Register = () => {
                   required
                   value={formData.password}
                   onChange={handleInputChange}
-                  className={`appearance-none block w-full px-3 py-2 border rounded-md placeholder-gray-400 focus:outline-none focus:ring-yellow-500 focus:border-yellow-500 ${
-                    errors.password ? 'border-red-300' : 'border-gray-300'
+                  className={`appearance-none block w-full px-3 py-2 border rounded-md placeholder-gray-400 dark:placeholder-gray-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-yellow-500 focus:border-yellow-500 ${
+                    errors.password ? 'border-red-300 dark:border-red-600' : 'border-gray-300 dark:border-gray-600'
                   }`}
                   placeholder="••••••••"
                 />
                 {errors.password && (
-                  <p className="mt-1 text-sm text-red-600">{errors.password}</p>
+                  <p className="mt-1 text-sm text-red-600 dark:text-red-400">{errors.password}</p>
                 )}
               </div>
             </div>
 
             <div>
-              <label htmlFor="confirmPassword" className="block text-sm font-medium text-gray-700">
+              <label htmlFor="confirmPassword" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
                 Parola Tekrar
               </label>
               <div className="mt-1">
@@ -205,13 +202,13 @@ const Register = () => {
                   required
                   value={formData.confirmPassword}
                   onChange={handleInputChange}
-                  className={`appearance-none block w-full px-3 py-2 border rounded-md placeholder-gray-400 focus:outline-none focus:ring-yellow-500 focus:border-yellow-500 ${
-                    errors.confirmPassword ? 'border-red-300' : 'border-gray-300'
+                  className={`appearance-none block w-full px-3 py-2 border rounded-md placeholder-gray-400 dark:placeholder-gray-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-yellow-500 focus:border-yellow-500 ${
+                    errors.confirmPassword ? 'border-red-300 dark:border-red-600' : 'border-gray-300 dark:border-gray-600'
                   }`}
                   placeholder="••••••••"
                 />
                 {errors.confirmPassword && (
-                  <p className="mt-1 text-sm text-red-600">{errors.confirmPassword}</p>
+                  <p className="mt-1 text-sm text-red-600 dark:text-red-400">{errors.confirmPassword}</p>
                 )}
               </div>
             </div>
@@ -222,10 +219,10 @@ const Register = () => {
                 name="terms"
                 type="checkbox"
                 required
-                className="h-4 w-4 text-yellow-600 focus:ring-yellow-500 border-gray-300 rounded"
+                className="h-4 w-4 text-yellow-600 focus:ring-yellow-500 border-gray-300 dark:border-gray-600 rounded dark:bg-gray-700"
               />
-              <label htmlFor="terms" className="ml-2 block text-sm text-gray-900">
-                <span className="text-gray-700">
+              <label htmlFor="terms" className="ml-2 block text-sm text-gray-900 dark:text-gray-300">
+                <span className="text-gray-700 dark:text-gray-300">
                   <button type="button" className="text-yellow-600 hover:text-yellow-500">Kullanım Şartları</button> ve{' '}
                   <button type="button" className="text-yellow-600 hover:text-yellow-500">Gizlilik Politikası</button>'nı kabul ediyorum
                 </span>
