@@ -44,15 +44,7 @@ const TripPlanner = () => {
         }
       } catch (error) {
         console.error('Katalog yüklenirken hata:', error);
-        
-        // Oturum süresi dolmuş kontrolü
-        if (error.message.includes('Oturum süresi doldu')) {
-          // Session süresi dolmuş, kullanıcıyı logout yap
-          dispatch(logoutUser());
-          return; // Catalog yüklemeyi durdur
-        }
-        
-        // Diğer hatalar için default catalog kullan
+        // Fallback data kullan
         setCatalogData({
           countries: [
             { countryCode: 'TR', countryName: 'Turkey' },
@@ -264,17 +256,7 @@ const TripPlanner = () => {
       setShowSimulation(true);
     } catch (error) {
       console.error('Simülasyon hatası:', error);
-      
-      // Oturum süresi dolmuş hatası için
-      if (error.message.includes('Oturum süresi doldu')) {
-        alert('Oturum süreniz dolmuş. Sayfayı yenileyerek tekrar giriş yapın.');
-        // Redux store'dan logout yap
-        dispatch(logoutUser());
-        // Sayfayı yenile
-        window.location.reload();
-      } else {
-        alert(`Simülasyon sırasında bir hata oluştu: ${error.message}`);
-      }
+      alert(`Simülasyon sırasında bir hata oluştu: ${error.message}`);
     }
   };
 
